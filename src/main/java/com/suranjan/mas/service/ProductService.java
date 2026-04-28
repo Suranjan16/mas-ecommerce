@@ -50,4 +50,8 @@ public class ProductService {
     public List<Product> getProductByCategory(String category) {
         return repository.findByCategory(category);
     }
+
+    public List<Product> getProductByName(String name) {
+        return repository.findByNameContaining(name);
+    }
 }
