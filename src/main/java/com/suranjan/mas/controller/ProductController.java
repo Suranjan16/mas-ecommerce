@@ -54,6 +54,7 @@ public class ProductController {
         return service.getProductByName(name);
     }
 
+    @GetMapping("/page")
     public Page<Product> getProductWithPagination(@RequestParam int page, @RequestParam int size) {
         return service.getProductsWithPagination(page, size);
     }
