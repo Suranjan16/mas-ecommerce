@@ -20,7 +20,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
-        return service.Login(request);
+    public String login(@RequestBody LoginRequest loginRequest) {
+        return service.Login(loginRequest);
     }
 }
