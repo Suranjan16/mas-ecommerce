@@ -1,10 +1,12 @@
 package com.suranjan.mas.auth.service;
 
 
+import com.suranjan.mas.auth.dto.AuthResponse;
 import com.suranjan.mas.auth.dto.LoginRequest;
 import com.suranjan.mas.auth.entity.Role;
 import com.suranjan.mas.auth.entity.User;
 import com.suranjan.mas.auth.repository.UserRepository;
+import com.suranjan.mas.auth.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,12 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public User signup(User user) {
@@ -32,14 +36,17 @@ public class AuthService {
         return repository.save(user);
     }
 
-    public String Login(LoginRequest loginRequest) {
-        User user = repository.findByEmail(loginRequest.getEmail())
+    public AuthResponse login(LoginRequest request) {
+
+        User user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid email or password");
         }
 
-        return "Login successful";
+        String token = jwtService.generateToken(user);
+
+        return new AuthResponse(token);
     }
 }
