@@ -1,5 +1,6 @@
 package com.suranjan.mas.auth.controller;
 
+import com.suranjan.mas.auth.dto.AuthResponse;
 import com.suranjan.mas.auth.dto.LoginRequest;
 import com.suranjan.mas.auth.entity.User;
 import com.suranjan.mas.auth.service.AuthService;
@@ -20,7 +21,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
-        return service.Login(loginRequest);
+    public AuthResponse login(@RequestBody LoginRequest request) {
+        return service.login(request);
     }
 }
