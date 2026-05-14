@@ -3,6 +3,8 @@ package com.suranjan.mas.auth.service;
 
 import com.suranjan.mas.auth.dto.AuthResponse;
 import com.suranjan.mas.auth.dto.LoginRequest;
+import com.suranjan.mas.auth.dto.SignupRequest;
+import com.suranjan.mas.auth.dto.UserResponse;
 import com.suranjan.mas.auth.entity.Role;
 import com.suranjan.mas.auth.entity.User;
 import com.suranjan.mas.auth.repository.UserRepository;
@@ -22,18 +24,27 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public User signup(User user) {
+    public UserResponse signup(SignupRequest signupRequest) {
 
-        // Check if email already exists
-        if (repository.existsByEmail(user.getEmail())) {
+        if (repository.existsByEmail(signupRequest.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
 
-        // Default role
-        user.setRole(Role.USER);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User user = new User();
 
-        return repository.save(user);
+        user.setName(signupRequest.getName());
+        user.setEmail(signupRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        user.setRole(Role.USER);
+
+        User savedUser = repository.save(user);
+
+        return new UserResponse(
+                savedUser.getId(),
+                savedUser.getName(),
+                savedUser.getEmail(),
+                savedUser.getRole()
+        );
     }
 
     public AuthResponse login(LoginRequest request) {
