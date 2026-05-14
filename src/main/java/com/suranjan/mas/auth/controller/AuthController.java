@@ -2,7 +2,8 @@ package com.suranjan.mas.auth.controller;
 
 import com.suranjan.mas.auth.dto.AuthResponse;
 import com.suranjan.mas.auth.dto.LoginRequest;
-import com.suranjan.mas.auth.entity.User;
+import com.suranjan.mas.auth.dto.SignupRequest;
+import com.suranjan.mas.auth.dto.UserResponse;
 import com.suranjan.mas.auth.service.AuthService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +17,8 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public User signup(@RequestBody User user) {
-        return service.signup(user);
+    public UserResponse signup(@RequestBody SignupRequest signupRequest) {
+        return service.signup(signupRequest);
     }
 
     @PostMapping("/login")
