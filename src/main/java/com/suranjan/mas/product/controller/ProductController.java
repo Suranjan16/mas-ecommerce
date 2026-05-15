@@ -1,5 +1,7 @@
 package com.suranjan.mas.product.controller;
 
+import com.suranjan.mas.product.dto.ProductRequest;
+import com.suranjan.mas.product.dto.ProductResponse;
 import com.suranjan.mas.product.entity.Product;
 import com.suranjan.mas.product.service.ProductService;
 import jakarta.validation.Valid;
@@ -19,8 +21,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product addProduct(@Valid @RequestBody Product product) {
-        return service.addProduct(product);
+    public ProductResponse addProduct(@RequestBody ProductRequest request) {
+        return service.addProduct(request);
     }
 
     @GetMapping
