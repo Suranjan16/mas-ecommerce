@@ -1,5 +1,7 @@
 package com.suranjan.mas.product.service;
 
+import com.suranjan.mas.product.dto.ProductRequest;
+import com.suranjan.mas.product.dto.ProductResponse;
 import com.suranjan.mas.product.entity.Product;
 import com.suranjan.mas.exception.ProductNotFoundException;
 import com.suranjan.mas.product.repository.ProductRepository;
@@ -18,8 +20,24 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public Product addProduct(Product product) {
-        return repository.save(product);
+    public ProductResponse addProduct(ProductRequest request) {
+
+        Product product = new Product();
+
+        product.setName(request.getName());
+        product.setCategory(request.getCategory());
+        product.setPrice(request.getPrice());
+        product.setQuantity(request.getQuantity());
+
+        Product savedProduct = repository.save(product);
+
+        return new ProductResponse(
+                savedProduct.getId(),
+                savedProduct.getName(),
+                savedProduct.getCategory(),
+                savedProduct.getPrice(),
+                savedProduct.getQuantity()
+        );
     }
 
     public List<Product> getAllProducts() {
